@@ -1,4 +1,5 @@
 import { useState } from "react";
+import LoginForm from "../components/LoginForm";
 import "./LoginPage.css";
 
 function LoginPage() {
@@ -33,36 +34,13 @@ function LoginPage() {
         <h1>Login</h1>
         <p>Welcome back! Please login to your account.</p>
 
-        {error && <p className="error-msg">{error}</p>}
-        {success && <p className="success-msg">Login successful!</p>}
-
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Enter your email"
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Enter your password"
-            />
-          </div>
-
-          <button type="submit" className="btn-submit">
-            Login
-          </button>
-        </form>
+        <LoginForm
+          formData={formData}
+          onChange={handleChange}
+          onSubmit={handleSubmit}
+          error={error}
+          success={success}
+        />
 
         <p className="redirect-text">
           Don't have an account? <a href="/register">Register here</a>
