@@ -1,5 +1,6 @@
 import { useState } from "react";
 import skillHubFacade from "../services/skillHubFacade";
+import RegisterForm from "../components/RegisterForm";
 import "./RegisterPage.css";
 
 function RegisterPage() {
@@ -7,6 +8,7 @@ function RegisterPage() {
     name: "",
     email: "",
     password: "",
+    role: "student",
   });
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -40,51 +42,13 @@ function RegisterPage() {
         <h1>Register</h1>
         <p>Create your account and start learning today.</p>
 
-        {error && <p className="error-msg">{error}</p>}
-        {success && (
-          <p className="success-msg">
-            Registration successful! You can now login.
-          </p>
-        )}
-
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Full Name</label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Enter your full name"
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Enter your email"
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Create a password"
-            />
-          </div>
-
-          <button type="submit" className="btn-submit">
-            Register
-          </button>
-        </form>
+        <RegisterForm
+          formData={formData}
+          onChange={handleChange}
+          onSubmit={handleSubmit}
+          error={error}
+          success={success}
+        />
 
         <p className="redirect-text">
           Already have an account? <a href="/login">Login here</a>

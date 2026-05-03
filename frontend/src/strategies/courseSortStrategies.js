@@ -11,9 +11,10 @@ export const sortByPriceHighToLow = (courses) => {
 };
 
 export const filterByCategory = (courses, categoryId) => {
-  if (!categoryId) return courses;
+  if (!categoryId || categoryId === "") return courses;
+
   return courses.filter(
-    (course) => course.category_id === Number(categoryId)
+    (course) => String(course.category_id) === String(categoryId)
   );
 };
 
@@ -22,3 +23,4 @@ export const courseSortStrategies = {
   priceLow: sortByPriceLowToHigh,
   priceHigh: sortByPriceHighToLow,
 };
+

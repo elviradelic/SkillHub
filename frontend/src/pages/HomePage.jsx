@@ -6,7 +6,7 @@ function HomePage() {
     <div className="home">
       <section className="hero">
         <div className="hero-content">
-          <h1>Welcome to <span>SkillHub</span></h1>
+          <h1><span>Welcome to </span><span>SkillHub</span></h1>
           <p>
             Discover courses, learn new skills, and grow your knowledge
             with our e-learning platform.
