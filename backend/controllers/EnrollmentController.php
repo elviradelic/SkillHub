@@ -20,4 +20,13 @@ class EnrollmentController {
 
     echo json_encode($result);
 }
+public function getUserEnrollments($userId) {
+
+    $enrollments = $this->service->getUserEnrollments($userId);
+
+    echo json_encode([
+        "success" => true,
+        "data" => $enrollments
+    ]);
+}
 }

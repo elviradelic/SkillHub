@@ -19,4 +19,7 @@ class EnrollmentService {
     public function createEnrollment($data) {
         return $this->facade->enrollStudent($data);
     }
+    public function getUserEnrollments($userId) {
+    return $this->dao->getUserEnrollments($userId);
+    }
 }
