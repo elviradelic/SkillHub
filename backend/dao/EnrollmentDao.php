@@ -42,4 +42,25 @@ class EnrollmentDao {
 
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
+public function getUserEnrollments($userId) {
+
+    $query = "SELECT 
+                enrollments.id,
+                courses.title,
+                courses.description,
+                courses.price,
+                enrollments.status
+              FROM enrollments
+              JOIN courses 
+              ON enrollments.course_id = courses.id
+              WHERE enrollments.user_id = :user_id";
+
+    $stmt = $this->conn->prepare($query);
+
+    $stmt->execute([
+        ':user_id' => $userId
+    ]);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }

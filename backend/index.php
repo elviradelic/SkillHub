@@ -15,6 +15,9 @@ require_once __DIR__ . '/controllers/CourseController.php';
 require_once __DIR__ . '/controllers/EnrollmentController.php';
 require_once __DIR__ . '/controllers/CategoryController.php';
 require_once __DIR__ . '/controllers/LessonController.php';
+require_once __DIR__ . '/controllers/AuthController.php';
+require_once __DIR__ . '/controllers/ReviewController.php';
+require_once __DIR__ . '/controllers/QuizController.php';
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
@@ -24,6 +27,9 @@ $courseController = new CourseController();
 $enrollmentController = new EnrollmentController();
 $categoryController = new CategoryController();
 $lessonController = new LessonController();
+$authController = new AuthController();
+$reviewController = new ReviewController();
+$quizController = new QuizController();
 
 if ($uri === '/') {
     echo json_encode([
@@ -99,6 +105,45 @@ if ($uri === '/lessons' && $method === 'POST') {
 
 if (preg_match('/^\/courses\/(\d+)\/lessons$/', $uri, $matches) && $method === 'GET') {
     $lessonController->getLessonsByCourse($matches[1]);
+    exit;
+}
+if ($uri === '/login' && $method === 'POST') {
+    $authController->login();
+    exit;
+}
+if (preg_match('#^/my-courses/(\d+)$#', $uri, $matches) && $method === 'GET') {
+
+    $userId = $matches[1];
+
+    $enrollmentController->getUserEnrollments($userId);
+
+    exit;
+}
+if ($uri === '/reviews' && $method === 'POST') {
+    $reviewController->createReview();
+    exit;
+}
+
+if (preg_match('#^/reviews/course/(\d+)$#', $uri, $matches) && $method === 'GET') {
+    $reviewController->getCourseReviews($matches[1]);
+    exit;
+}
+if (preg_match('#^/quizzes/course/(\d+)$#', $uri, $matches) && $method === 'GET') {
+    $quizController->getQuizByCourse($matches[1]);
+    exit;
+}
+
+if (preg_match('#^/quizzes/(\d+)/questions$#', $uri, $matches) && $method === 'GET') {
+    $quizController->getQuizQuestions($matches[1]);
+    exit;
+}
+
+if ($uri === '/results' && $method === 'POST') {
+    $quizController->submitQuizResult();
+    exit;
+}
+if (preg_match('#^/results/user/(\d+)$#', $uri, $matches) && $method === 'GET') {
+    $quizController->getUserResults($matches[1]);
     exit;
 }
 
