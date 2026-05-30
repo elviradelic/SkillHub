@@ -16,6 +16,7 @@
 
 .navbar-links {
   display: flex;
+  align-items: center;
   gap: 24px;
 }
 
@@ -29,6 +30,26 @@
   color: #7c3aed;
 }
 
+.navbar-user {
+  color: #a855f7;
+  font-weight: bold;
+}
+
+.btn-logout {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn-logout:hover {
+  background-color: #7c3aed;
+  border-color: #7c3aed;
+}
+
 @media (max-width: 768px) {
   .navbar {
     flex-direction: column;
@@ -38,5 +59,7 @@
 
   .navbar-links {
     gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }

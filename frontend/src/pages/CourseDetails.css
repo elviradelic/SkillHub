@@ -51,11 +51,28 @@
   font-size: 1rem;
 }
 
+.btn-quiz {
+  display: inline-block;
+  background-color: #a855f7;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.95rem;
+  margin-top: 12px;
+  margin-left: 12px;
+}
+
+.btn-quiz:hover {
+  background-color: #9333ea;
+}
+
 .course-lessons {
   background-color: white;
   border-radius: 12px;
   padding: 32px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
 }
 
 .course-lessons h2 {
@@ -79,6 +96,83 @@
   color: #333;
 }
 
+.course-reviews {
+  background-color: white;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+}
+
+.course-reviews h2 {
+  font-size: 1.4rem;
+  color: #1e1e2e;
+  margin-bottom: 16px;
+}
+
+.review-card {
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.review-author {
+  font-weight: bold;
+  color: #1e1e2e;
+  margin-bottom: 4px;
+}
+
+.review-rating {
+  color: #7c3aed;
+  margin-bottom: 4px;
+}
+
+.review-comment {
+  color: #555;
+}
+
+.review-form {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.review-form h3 {
+  font-size: 1.1rem;
+  color: #1e1e2e;
+}
+
+.review-form select,
+.review-form textarea {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.review-form select:focus,
+.review-form textarea:focus {
+  border-color: #7c3aed;
+}
+
+.btn-review {
+  background-color: #7c3aed;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: bold;
+}
+
+.btn-review:hover {
+  background-color: #6d28d9;
+}
+
 @media (max-width: 768px) {
   .course-details {
     padding: 0 16px;
@@ -91,5 +185,24 @@
 
   .course-lessons {
     padding: 20px;
+  }
+
+  .course-reviews {
+    padding: 20px;
+  }
+
+  .btn-quiz {
+    margin-left: 0;
+    margin-top: 12px;
+    display: block;
+    text-align: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .review-form select,
+  .review-form textarea,
+  .btn-review {
+    width: 100%;
   }
 }

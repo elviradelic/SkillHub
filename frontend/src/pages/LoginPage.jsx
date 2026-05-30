@@ -1,5 +1,6 @@
 import { useState } from "react";
 import LoginForm from "../components/LoginForm";
+import skillHubFacade from "../services/skillHubFacade";
 import "./LoginPage.css";
 
 function LoginPage() {
@@ -23,9 +24,20 @@ function LoginPage() {
       return;
     }
 
-    // TODO: connect to backend login endpoint when available
-    console.log("Login data:", formData);
-    setSuccess(true);
+    skillHubFacade
+      .loginUser(formData)
+      .then((res) => {
+        if (res.data.success) {
+          localStorage.setItem("user", JSON.stringify(res.data.user));
+          setSuccess(true);
+          window.location.href = "/courses";
+        } else {
+          setError(res.data.message);
+        }
+      })
+      .catch(() => {
+        setError("Login failed. Please try again.");
+      });
   };
 
   return (
