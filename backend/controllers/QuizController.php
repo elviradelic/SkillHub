@@ -19,12 +19,36 @@ class QuizController {
         ]);
     }
 
+    public function createQuiz() {
+        $data = json_decode(file_get_contents("php://input"), true);
+
+        $id = $this->service->createQuiz($data);
+
+        echo json_encode([
+            "success" => true,
+            "message" => "Quiz created",
+            "id" => $id
+        ]);
+    }
+
     public function getQuizQuestions($quizId) {
         $questions = $this->service->getQuizQuestions($quizId);
 
         echo json_encode([
             "success" => true,
             "data" => $questions
+        ]);
+    }
+
+    public function createQuestion() {
+        $data = json_decode(file_get_contents("php://input"), true);
+
+        $id = $this->service->createQuestion($data);
+
+        echo json_encode([
+            "success" => true,
+            "message" => "Question created",
+            "id" => $id
         ]);
     }
 
@@ -39,12 +63,24 @@ class QuizController {
             "id" => $id
         ]);
     }
-    public function getUserResults($userId) {
-    $results = $this->service->getUserResults($userId);
 
-    echo json_encode([
-        "success" => true,
-        "data" => $results
-    ]);
-}
+    public function submitQuizWithAnswers() {
+        $data = json_decode(file_get_contents("php://input"), true);
+
+        $result = $this->service->submitQuizWithAnswers($data);
+
+        echo json_encode([
+            "success" => true,
+            "data" => $result
+        ]);
+    }
+
+    public function getUserResults($userId) {
+        $results = $this->service->getUserResults($userId);
+
+        echo json_encode([
+            "success" => true,
+            "data" => $results
+        ]);
+    }
 }

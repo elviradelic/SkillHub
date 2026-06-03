@@ -18,6 +18,11 @@ require_once __DIR__ . '/controllers/LessonController.php';
 require_once __DIR__ . '/controllers/AuthController.php';
 require_once __DIR__ . '/controllers/ReviewController.php';
 require_once __DIR__ . '/controllers/QuizController.php';
+require_once __DIR__ . '/controllers/ProgressController.php';
+require_once __DIR__ . '/controllers/CertificateController.php';
+require_once __DIR__ . '/controllers/LastAccessedLessonController.php';
+require_once __DIR__ . '/controllers/NotificationController.php';
+require_once __DIR__ . '/controllers/MaterialController.php';
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
@@ -30,6 +35,11 @@ $lessonController = new LessonController();
 $authController = new AuthController();
 $reviewController = new ReviewController();
 $quizController = new QuizController();
+$progressController = new ProgressController();
+$certificateController = new CertificateController();
+$lastAccessedLessonController = new LastAccessedLessonController();
+$notificationController = new NotificationController();
+$materialController = new MaterialController();
 
 if ($uri === '/') {
     echo json_encode([
@@ -48,8 +58,23 @@ if ($uri === '/users' && $method === 'POST') {
     exit;
 }
 
+if (preg_match('#^/users/(\d+)/promote$#', $uri, $matches) && $method === 'PUT') {
+    $userController->promoteToInstructor($matches[1]);
+    exit;
+}
+
+if (preg_match('#^/users/(\d+)$#', $uri, $matches) && $method === 'DELETE') {
+    $userController->deleteUser($matches[1]);
+    exit;
+}
+
 if ($uri === '/courses' && $method === 'GET') {
     $courseController->getCourses();
+    exit;
+}
+
+if (preg_match('#^/instructor-courses/(\d+)$#', $uri, $matches) && $method === 'GET') {
+    $courseController->getInstructorCourses($matches[1]);
     exit;
 }
 
@@ -103,22 +128,31 @@ if ($uri === '/lessons' && $method === 'POST') {
     exit;
 }
 
+if (preg_match('#^/lessons/(\d+)$#', $uri, $matches) && $method === 'PUT') {
+    $lessonController->updateLesson($matches[1]);
+    exit;
+}
+
+if (preg_match('#^/lessons/(\d+)$#', $uri, $matches) && $method === 'DELETE') {
+    $lessonController->deleteLesson($matches[1]);
+    exit;
+}
+
 if (preg_match('/^\/courses\/(\d+)\/lessons$/', $uri, $matches) && $method === 'GET') {
     $lessonController->getLessonsByCourse($matches[1]);
     exit;
 }
+
 if ($uri === '/login' && $method === 'POST') {
     $authController->login();
     exit;
 }
+
 if (preg_match('#^/my-courses/(\d+)$#', $uri, $matches) && $method === 'GET') {
-
-    $userId = $matches[1];
-
-    $enrollmentController->getUserEnrollments($userId);
-
+    $enrollmentController->getUserEnrollments($matches[1]);
     exit;
 }
+
 if ($uri === '/reviews' && $method === 'POST') {
     $reviewController->createReview();
     exit;
@@ -128,6 +162,7 @@ if (preg_match('#^/reviews/course/(\d+)$#', $uri, $matches) && $method === 'GET'
     $reviewController->getCourseReviews($matches[1]);
     exit;
 }
+
 if (preg_match('#^/quizzes/course/(\d+)$#', $uri, $matches) && $method === 'GET') {
     $quizController->getQuizByCourse($matches[1]);
     exit;
@@ -142,8 +177,81 @@ if ($uri === '/results' && $method === 'POST') {
     $quizController->submitQuizResult();
     exit;
 }
+
 if (preg_match('#^/results/user/(\d+)$#', $uri, $matches) && $method === 'GET') {
     $quizController->getUserResults($matches[1]);
+    exit;
+}
+
+if ($uri === '/quizzes' && $method === 'POST') {
+    $quizController->createQuiz();
+    exit;
+}
+
+if ($uri === '/questions' && $method === 'POST') {
+    $quizController->createQuestion();
+    exit;
+}
+
+if ($uri === '/quiz-submit' && $method === 'POST') {
+    $quizController->submitQuizWithAnswers();
+    exit;
+}
+
+if ($uri === '/progress' && $method === 'POST') {
+    $progressController->markLessonCompleted();
+    exit;
+}
+
+if (preg_match('#^/progress/(\d+)/(\d+)$#', $uri, $matches) && $method === 'GET') {
+    $progressController->getCourseProgress($matches[1], $matches[2]);
+    exit;
+}
+
+if ($uri === '/certificates' && $method === 'POST') {
+    $certificateController->createCertificate();
+    exit;
+}
+
+if (preg_match('#^/certificates/user/(\d+)$#', $uri, $matches) && $method === 'GET') {
+    $certificateController->getUserCertificates($matches[1]);
+    exit;
+}
+
+if ($uri === '/last-accessed-lesson' && $method === 'POST') {
+    $lastAccessedLessonController->saveLastAccessedLesson();
+    exit;
+}
+
+if (preg_match('#^/last-accessed-lesson/(\d+)/(\d+)$#', $uri, $matches) && $method === 'GET') {
+    $lastAccessedLessonController->getLastAccessedLesson($matches[1], $matches[2]);
+    exit;
+}
+
+if ($uri === '/notifications' && $method === 'POST') {
+    $notificationController->createNotification();
+    exit;
+}
+
+if (preg_match('#^/notifications/user/(\d+)$#', $uri, $matches) && $method === 'GET') {
+    $notificationController->getUserNotifications($matches[1]);
+    exit;
+}
+
+if ($uri === '/materials' && $method === 'POST') {
+    $materialController->uploadMaterial();
+    exit;
+}
+
+if (preg_match('#^/materials/course/(\d+)$#', $uri, $matches) && $method === 'GET') {
+    $materialController->getMaterialsByCourse($matches[1]);
+    exit;
+}
+if (
+    preg_match('#^/materials/download/(\d+)$#', $uri, $matches)
+    && $method === 'GET'
+) {
+    $materialController->downloadMaterial($matches[1]);
     exit;
 }
 

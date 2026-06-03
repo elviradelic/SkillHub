@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../dao/UserDao.php';
 
 class UserService {
+
     private $userDao;
 
     public function __construct() {
@@ -14,7 +15,14 @@ class UserService {
     }
 
     public function createUser($data) {
-        // možeš kasnije dodati validaciju
         return $this->userDao->createUser($data);
+    }
+
+    public function deleteUser($id) {
+        return $this->userDao->deleteUser($id);
+    }
+
+    public function promoteToInstructor($id) {
+        return $this->userDao->promoteToInstructor($id);
     }
 }

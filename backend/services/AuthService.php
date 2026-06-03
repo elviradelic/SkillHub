@@ -20,7 +20,7 @@ class AuthService {
             ];
         }
 
-        if ($user['password'] !== $password) {
+        if (!password_verify($password, $user['password'])) {
             return [
                 "success" => false,
                 "message" => "Invalid password"

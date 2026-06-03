@@ -14,6 +14,7 @@ class EnrollmentDao {
         $query = "SELECT * FROM enrollments";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -22,6 +23,7 @@ class EnrollmentDao {
                   VALUES (:user_id, :course_id, :status)";
 
         $stmt = $this->conn->prepare($query);
+
         $stmt->execute([
             ':user_id' => $data['user_id'],
             ':course_id' => $data['course_id'],
@@ -30,37 +32,40 @@ class EnrollmentDao {
 
         return $this->conn->lastInsertId();
     }
+
     public function findEnrollment($userId, $courseId) {
-    $query = "SELECT * FROM enrollments 
-              WHERE user_id = :user_id AND course_id = :course_id";
+        $query = "SELECT * FROM enrollments 
+                  WHERE user_id = :user_id AND course_id = :course_id";
 
-    $stmt = $this->conn->prepare($query);
-    $stmt->execute([
-        ':user_id' => $userId,
-        ':course_id' => $courseId
-    ]);
+        $stmt = $this->conn->prepare($query);
 
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
-public function getUserEnrollments($userId) {
+        $stmt->execute([
+            ':user_id' => $userId,
+            ':course_id' => $courseId
+        ]);
 
-    $query = "SELECT 
-                enrollments.id,
-                courses.title,
-                courses.description,
-                courses.price,
-                enrollments.status
-              FROM enrollments
-              JOIN courses 
-              ON enrollments.course_id = courses.id
-              WHERE enrollments.user_id = :user_id";
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
-    $stmt = $this->conn->prepare($query);
+    public function getUserEnrollments($userId) {
+        $query = "SELECT 
+                    enrollments.id AS enrollment_id,
+                    courses.id AS course_id,
+                    courses.title,
+                    courses.description,
+                    courses.price,
+                    enrollments.status
+                  FROM enrollments
+                  JOIN courses 
+                  ON enrollments.course_id = courses.id
+                  WHERE enrollments.user_id = :user_id";
 
-    $stmt->execute([
-        ':user_id' => $userId
-    ]);
+        $stmt = $this->conn->prepare($query);
 
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+        $stmt->execute([
+            ':user_id' => $userId
+        ]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

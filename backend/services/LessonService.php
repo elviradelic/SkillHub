@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../dao/LessonDao.php';
 
 class LessonService {
+
     private $lessonDao;
 
     public function __construct() {
@@ -19,5 +20,13 @@ class LessonService {
 
     public function createLesson($data) {
         return $this->lessonDao->createLesson($data);
+    }
+
+    public function updateLesson($id, $data) {
+        return $this->lessonDao->updateLesson($id, $data);
+    }
+
+    public function deleteLesson($id) {
+        return $this->lessonDao->deleteLesson($id);
     }
 }
