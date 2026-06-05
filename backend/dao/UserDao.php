@@ -11,9 +11,11 @@ class UserDao {
     }
 
     public function getAllUsers() {
-        $query = "SELECT * FROM users";
+        $query = "SELECT id, name, email, role, created_at FROM users";
+
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -22,13 +24,38 @@ class UserDao {
                   VALUES (:name, :email, :password, :role)";
         
         $stmt = $this->conn->prepare($query);
+
+        $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+
         $stmt->execute([
             ':name' => $data['name'],
             ':email' => $data['email'],
-            ':password' => $data['password'],
+            ':password' => $hashedPassword,
             ':role' => $data['role']
         ]);
 
         return $this->conn->lastInsertId();
+    }
+
+    public function deleteUser($id) {
+        $query = "DELETE FROM users WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        return $stmt->execute([
+            ':id' => $id
+        ]);
+    }
+
+    public function promoteToInstructor($id) {
+        $query = "UPDATE users 
+                  SET role = 'instructor'
+                  WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        return $stmt->execute([
+            ':id' => $id
+        ]);
     }
 }

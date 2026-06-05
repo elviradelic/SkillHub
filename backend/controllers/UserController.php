@@ -22,4 +22,24 @@ class UserController {
             "id" => $id
         ]);
     }
+
+    public function deleteUser($id) {
+        $deleted = $this->service->deleteUser($id);
+
+        echo json_encode([
+            "message" => $deleted
+                ? "User deleted"
+                : "User delete failed"
+        ]);
+    }
+
+    public function promoteToInstructor($id) {
+        $updated = $this->service->promoteToInstructor($id);
+
+        echo json_encode([
+            "message" => $updated
+                ? "User promoted to instructor"
+                : "User promotion failed"
+        ]);
+    }
 }

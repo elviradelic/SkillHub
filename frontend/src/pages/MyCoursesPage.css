@@ -1,0 +1,95 @@
+.my-courses-page {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 32px;
+}
+
+.my-courses-page h1 {
+  font-size: 2rem;
+  color: #1e1e2e;
+  margin-bottom: 32px;
+}
+
+.my-courses-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.my-course-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.my-course-card h2 {
+  font-size: 1.1rem;
+  color: #1e1e2e;
+}
+
+.my-course-card p {
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.course-status {
+  color: #7c3aed;
+  font-weight: bold;
+}
+
+.btn-continue {
+  display: inline-block;
+  background-color: #7c3aed;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.btn-continue:hover {
+  background-color: #6d28d9;
+}
+
+.loading {
+  text-align: center;
+  color: #7c3aed;
+  padding: 40px;
+  font-size: 1.2rem;
+}
+
+.error {
+  text-align: center;
+  color: red;
+  padding: 40px;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 1024px) {
+  .my-courses-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .my-courses-page {
+    padding: 20px;
+  }
+
+  .my-courses-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .my-course-card {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+}

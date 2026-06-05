@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import skillHubFacade from "../services/skillHubFacade";
-import { courseSortStrategies, filterByCategory } from "../strategies/courseSortStrategies";
+import {
+  courseSortStrategies,
+  filterByCategory,
+} from "../strategies/courseSortStrategies";
 import CourseCard from "../components/CourseCard";
 import "./CoursesPage.css";
 
@@ -9,6 +12,7 @@ function CoursesPage() {
   const [categories, setCategories] = useState([]);
   const [sortStrategy, setSortStrategy] = useState("title");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -34,10 +38,22 @@ function CoursesPage() {
   }, []);
 
   const selectedStrategy = courseSortStrategies[sortStrategy];
-  const sortedCourses = selectedStrategy
-    ? selectedStrategy(courses)
-    : courses;
-  const filteredCourses = filterByCategory(sortedCourses, selectedCategory);
+
+  const sortedCourses = selectedStrategy ? selectedStrategy(courses) : courses;
+
+  const categoryFilteredCourses = filterByCategory(
+    sortedCourses,
+    selectedCategory
+  );
+
+  const searchedCourses = categoryFilteredCourses.filter((course) => {
+    const search = searchTerm.toLowerCase();
+
+    return (
+      course.title.toLowerCase().includes(search) ||
+      course.description.toLowerCase().includes(search)
+    );
+  });
 
   if (loading) return <p className="loading">Loading courses...</p>;
 
@@ -46,6 +62,13 @@ function CoursesPage() {
       <h1>All Courses</h1>
 
       <div className="filters">
+        <input
+          type="text"
+          placeholder="Search courses..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+
         <select
           value={sortStrategy}
           onChange={(e) => setSortStrategy(e.target.value)}
@@ -69,8 +92,8 @@ function CoursesPage() {
       </div>
 
       <div className="courses-grid">
-        {filteredCourses.length > 0 ? (
-          filteredCourses.map((course) => (
+        {searchedCourses.length > 0 ? (
+          searchedCourses.map((course) => (
             <CourseCard key={course.id} course={course} />
           ))
         ) : (

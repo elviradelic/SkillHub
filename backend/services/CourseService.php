@@ -13,18 +13,23 @@ class CourseService {
         return $this->courseDao->getAllCourses();
     }
 
+    public function getCoursesByInstructor($instructorId) {
+        return $this->courseDao->getCoursesByInstructor($instructorId);
+    }
+
     public function createCourse($data) {
         return $this->courseDao->createCourse($data);
     }
+
     public function getCourse($id) {
-    return $this->courseDao->getCourseById($id);
-}
+        return $this->courseDao->getCourseById($id);
+    }
 
-public function updateCourse($id, $data) {
-    return $this->courseDao->updateCourse($id, $data);
-}
+    public function updateCourse($id, $data) {
+        return $this->courseDao->updateCourse($id, $data);
+    }
 
-public function deleteCourse($id) {
-    return $this->courseDao->deleteCourse($id);
-}
+    public function deleteCourse($id) {
+        return $this->courseDao->deleteCourse($id);
+    }
 }

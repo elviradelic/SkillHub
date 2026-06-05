@@ -13,6 +13,12 @@ class CourseController {
         echo json_encode($this->service->getCourses());
     }
 
+    public function getInstructorCourses($instructorId) {
+        echo json_encode([
+            "data" => $this->service->getCoursesByInstructor($instructorId)
+        ]);
+    }
+
     public function createCourse() {
         $data = json_decode(file_get_contents("php://input"), true);
 
@@ -23,33 +29,38 @@ class CourseController {
             "id" => $id
         ]);
     }
-    public function getCourseById($id) {
-    $course = $this->service->getCourse($id);
 
-    if ($course) {
-        echo json_encode($course);
-    } else {
+    public function getCourseById($id) {
+        $course = $this->service->getCourse($id);
+
+        if ($course) {
+            echo json_encode($course);
+        } else {
+            echo json_encode([
+                "message" => "Course not found"
+            ]);
+        }
+    }
+
+    public function updateCourse($id) {
+        $data = json_decode(file_get_contents("php://input"), true);
+
+        $updated = $this->service->updateCourse($id, $data);
+
         echo json_encode([
-            "message" => "Course not found"
+            "message" => $updated
+                ? "Course updated"
+                : "Course update failed"
         ]);
     }
-}
 
-public function updateCourse($id) {
-    $data = json_decode(file_get_contents("php://input"), true);
+    public function deleteCourse($id) {
+        $deleted = $this->service->deleteCourse($id);
 
-    $updated = $this->service->updateCourse($id, $data);
-
-    echo json_encode([
-        "message" => $updated ? "Course updated" : "Course update failed"
-    ]);
-}
-
-public function deleteCourse($id) {
-    $deleted = $this->service->deleteCourse($id);
-
-    echo json_encode([
-        "message" => $deleted ? "Course deleted" : "Course delete failed"
-    ]);
-}
+        echo json_encode([
+            "message" => $deleted
+                ? "Course deleted"
+                : "Course delete failed"
+        ]);
+    }
 }

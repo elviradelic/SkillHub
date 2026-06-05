@@ -1,95 +1,220 @@
 .course-details {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 0 32px;
+  width: 100%;
+  margin: 32px 0;
+  padding: 0 40px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+.course-details-main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.course-details-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.course-details-header,
+.course-lessons,
+.course-reviews,
+.course-info-card,
+.course-sidebar-card {
+  background: white;
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: 0 10px 28px rgba(17, 24, 39, 0.08);
+  border: 1px solid #ede9fe;
+}
+
+.course-sidebar-card {
+  margin-bottom: 0;
 }
 
 .course-details-header {
-  background-color: white;
-  border-radius: 12px;
-  padding: 32px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 32px;
+  background: linear-gradient(135deg, #1e1e2e, #4c1d95);
+  color: white;
 }
 
 .course-details-header h1 {
-  font-size: 1.8rem;
-  color: #1e1e2e;
-  margin-bottom: 12px;
+  font-size: 2.2rem;
+  color: white;
+  margin-bottom: 14px;
 }
 
 .course-details-header p {
-  color: #555;
-  margin-bottom: 12px;
+  color: #ede9fe;
+  margin-bottom: 14px;
 }
 
 .course-details-price {
-  font-size: 1.3rem;
+  font-size: 1.6rem;
   font-weight: bold;
-  color: #7c3aed;
-  margin-bottom: 20px;
+  color: #c4b5fd;
+  margin-bottom: 22px;
+}
+
+.btn-enroll,
+.btn-quiz,
+.btn-review {
+  border: none;
+  padding: 12px 22px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
 }
 
 .btn-enroll {
-  background-color: #7c3aed;
+  background: #7c3aed;
   color: white;
-  border: none;
-  padding: 12px 28px;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  font-weight: bold;
 }
 
 .btn-enroll:hover {
-  background-color: #6d28d9;
+  background: #6d28d9;
+}
+
+.btn-quiz {
+  background: #a855f7;
+  color: white;
+  margin-left: 12px;
+}
+
+.btn-quiz:hover {
+  background: #9333ea;
 }
 
 .enrolled-msg {
-  color: #16a34a;
+  color: #86efac;
   font-weight: bold;
-  font-size: 1rem;
+  margin-bottom: 12px;
 }
 
 .course-lessons {
-  background-color: white;
-  border-radius: 12px;
-  padding: 32px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  grid-column: 1 / 2;
 }
 
-.course-lessons h2 {
-  font-size: 1.4rem;
+.course-reviews {
+  grid-column: 1 / -1;
+}
+
+.resume-card {
+  background: #f5f3ff;
+  border: 1px solid #d8b4fe;
+}
+
+.course-lessons h2,
+.course-reviews h2,
+.course-details h2,
+.course-details h3 {
   color: #1e1e2e;
   margin-bottom: 16px;
 }
 
-.course-lessons ul {
-  list-style: none;
-  padding: 0;
+.course-lessons > div {
+  background: #fafafa;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 14px !important;
+  padding: 16px !important;
+  margin-bottom: 12px !important;
+  transition: 0.2s ease;
+}
+
+.course-lessons > div:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(17, 24, 39, 0.08);
+}
+
+.course-lessons h4 {
+  color: #1e1e2e;
+}
+
+.course-lessons button,
+.course-details button {
+  border: none !important;
+  border-radius: 10px !important;
+  font-weight: bold;
+}
+
+.review-card {
+  background-color: #f8f8f8;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.review-author {
+  font-weight: bold;
+  color: #1e1e2e;
+  margin-bottom: 4px;
+}
+
+.review-rating {
+  color: #7c3aed;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+
+.review-comment {
+  color: #555;
+}
+
+.review-form {
+  margin-top: 24px;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.course-lessons ul li {
-  padding: 12px 16px;
-  background-color: #f8f8f8;
-  border-radius: 8px;
-  color: #333;
+.review-form h3 {
+  font-size: 1.1rem;
+  color: #1e1e2e;
 }
 
-@media (max-width: 768px) {
+.review-form select,
+.review-form textarea {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.review-form select:focus,
+.review-form textarea:focus {
+  border-color: #7c3aed;
+}
+
+.btn-review {
+  background-color: #7c3aed;
+  color: white;
+  width: fit-content;
+}
+
+.btn-review:hover {
+  background-color: #6d28d9;
+}
+
+@media (max-width: 900px) {
   .course-details {
+    grid-template-columns: 1fr;
     padding: 0 16px;
     margin: 24px auto;
   }
 
-  .course-details-header {
-    padding: 20px;
+  .course-lessons,
+  .course-reviews {
+    grid-column: auto;
   }
 
-  .course-lessons {
-    padding: 20px;
+  .btn-quiz {
+    margin-left: 0;
+    margin-top: 12px;
   }
 }
