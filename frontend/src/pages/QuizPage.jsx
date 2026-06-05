@@ -5,10 +5,13 @@ import "./QuizPage.css";
 
 function QuizPage() {
   const { courseId } = useParams();
+
   const [quiz, setQuiz] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [score, setScore] = useState(null);
+  const [earnedPoints, setEarnedPoints] = useState(null);
+  const [totalPoints, setTotalPoints] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -24,10 +27,12 @@ function QuizPage() {
         if (quizData && quizData.id) {
           return skillHubFacade.getQuizQuestions(quizData.id);
         }
+
+        return null;
       })
       .then((res) => {
         if (res) {
-          setQuestions(res.data.data);
+          setQuestions(res.data.data || []);
         }
         setLoading(false);
       })
@@ -38,7 +43,10 @@ function QuizPage() {
   }, [courseId]);
 
   const handleAnswerChange = (questionId, value) => {
-    setAnswers({ ...answers, [questionId]: value });
+    setAnswers({
+      ...answers,
+      [questionId]: value,
+    });
   };
 
   const handleSubmit = () => {
@@ -47,24 +55,23 @@ function QuizPage() {
       return;
     }
 
-    const totalPoints = questions.reduce(
-      (sum, q) => sum + Number(q.points),
-      0
-    );
-    const answeredCount = Object.keys(answers).length;
-    const calculatedScore =
-      totalPoints > 0
-        ? Math.round((answeredCount / questions.length) * 100)
-        : 0;
+    if (!quiz) {
+      setError("Quiz not found.");
+      return;
+    }
 
     skillHubFacade
-      .submitQuizResult({
+      .submitQuizWithAnswers({
         user_id: user.id,
         quiz_id: quiz.id,
-        score: calculatedScore,
+        answers: answers,
       })
-      .then(() => {
-        setScore(calculatedScore);
+      .then((res) => {
+        const result = res.data.data;
+
+        setScore(result.score);
+        setEarnedPoints(result.earned_points);
+        setTotalPoints(result.total_points);
       })
       .catch(() => {
         setError("Failed to submit quiz result.");
@@ -88,6 +95,7 @@ function QuizPage() {
                 {index + 1}. {question.text}
               </p>
               <p className="question-points">Points: {question.points}</p>
+
               <input
                 type="text"
                 className="question-input"
@@ -108,6 +116,10 @@ function QuizPage() {
         <div className="quiz-result">
           <h2>Quiz Submitted!</h2>
           <p>Your score: {score}%</p>
+          <p>
+            Points: {earnedPoints} / {totalPoints}
+          </p>
+
           <a href="/results" className="btn-results">
             View All Results
           </a>

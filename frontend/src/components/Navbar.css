@@ -5,6 +5,8 @@
   padding: 16px 32px;
   background-color: #1e1e2e;
   color: white;
+  position: relative;
+  z-index: 1000;
 }
 
 .navbar-brand a {
@@ -50,16 +52,153 @@
   border-color: #7c3aed;
 }
 
+.navbar-mobile-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* HAMBURGER */
+
+.navbar-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 34px;
+  cursor: pointer;
+  position: relative;
+  z-index: 2500;
+}
+
+/* NOTIFICATIONS */
+
+.notification-wrapper {
+  position: relative;
+}
+
+.notification-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 22px;
+  position: relative;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: red;
+  color: white;
+  border-radius: 50%;
+  font-size: 11px;
+  padding: 2px 6px;
+  font-weight: bold;
+}
+
+.notification-dropdown {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 320px;
+  max-height: 420px;
+  overflow-y: auto;
+  background: white;
+  color: #111;
+  border-radius: 14px;
+  padding: 14px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  z-index: 2000;
+}
+
+.notification-dropdown h4 {
+  margin-bottom: 12px;
+}
+
+.notification-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.notification-item p {
+  margin: 0;
+}
+
+.notification-item small {
+  color: #666;
+}
+
+.mobile-notification {
+  display: none;
+}
+
+/* MOBILE */
+
 @media (max-width: 768px) {
+
   .navbar {
-    flex-direction: column;
-    gap: 12px;
-    padding: 16px;
+    padding: 16px 20px;
+  }
+
+  .desktop-notification {
+    display: none;
+  }
+
+  .mobile-notification {
+    display: block;
+  }
+
+  .navbar-toggle {
+    display: block;
   }
 
   .navbar-links {
-    gap: 16px;
-    flex-wrap: wrap;
-    justify-content: center;
+    position: fixed;
+    top: 72px;
+    right: -320px;
+    width: 280px;
+    height: auto;
+
+    background: #1e1e2e;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 20px;
+    padding: 28px 30px;
+
+    transition: right 0.3s ease;
+    box-shadow: -5px 8px 25px rgba(0, 0, 0, 0.35);
+    border-radius: 0 0 0 18px;
+
+    z-index: 1500;
+  }
+
+  .navbar-links.active {
+    right: 0;
+  }
+
+  .navbar-links a {
+    width: 100%;
+    text-align: left;
+    font-size: 1.05rem;
+  }
+
+  .navbar-user {
+    width: 100%;
+    text-align: left;
+    margin-top: 10px;
+  }
+
+  .btn-logout {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .notification-dropdown {
+    right: -20px;
+    width: 300px;
   }
 }

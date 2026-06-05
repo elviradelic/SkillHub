@@ -1,0 +1,262 @@
+.admin-page {
+  min-height: 100vh;
+  padding: 32px;
+  background: #f6f3ff;
+  color: #111827;
+}
+
+.admin-hero {
+  background: linear-gradient(135deg, #1e1e2e, #3b0764);
+  color: white;
+  padding: 36px;
+  border-radius: 22px;
+  margin-bottom: 24px;
+  box-shadow: 0 16px 35px rgba(30, 30, 46, 0.2);
+}
+
+/* DODANO */
+.admin-hero * {
+  color: inherit;
+}
+
+.admin-kicker {
+  color: #c4b5fd;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.admin-hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: white; /* DODANO */
+}
+
+.admin-hero p {
+  max-width: 720px;
+  color: #ede9fe;
+  font-size: 1.05rem;
+}
+
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.admin-stat-card {
+  background: white;
+  padding: 22px;
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(17, 24, 39, 0.08);
+  border: 1px solid #ede9fe;
+}
+
+.admin-stat-card span {
+  display: block;
+  color: #6b7280;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.admin-stat-card strong {
+  font-size: 2rem;
+  color: #7c3aed;
+}
+
+.admin-panel {
+  background: white;
+  padding: 26px;
+  border-radius: 20px;
+  margin-bottom: 26px;
+  box-shadow: 0 10px 28px rgba(17, 24, 39, 0.08);
+  border: 1px solid #ede9fe;
+}
+
+.admin-section-header {
+  margin-bottom: 20px;
+}
+
+.admin-section-header h2 {
+  font-size: 1.6rem;
+  margin-bottom: 6px;
+}
+
+.admin-section-header p {
+  color: #6b7280;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.admin-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 18px;
+  background: #fafafa;
+  transition: 0.2s ease;
+}
+
+.admin-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(17, 24, 39, 0.08);
+}
+
+.admin-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.admin-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 6px;
+}
+
+.admin-card p {
+  color: #4b5563;
+}
+
+.admin-role {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.admin-role-student {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.admin-role-instructor {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.admin-role-admin {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.admin-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #4b5563;
+  margin-bottom: 16px;
+}
+
+.admin-card-actions,
+.admin-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.admin-btn {
+  border: none;
+  padding: 9px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.admin-btn:hover {
+  transform: translateY(-1px);
+}
+
+.admin-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin-btn-primary {
+  background: #7c3aed;
+  color: white;
+}
+
+.admin-btn-secondary {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.admin-btn-danger {
+  background: #ef4444;
+  color: white;
+}
+
+.admin-btn-success {
+  background: #16a34a;
+  color: white;
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.admin-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.admin-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-form-group label {
+  font-weight: 700;
+}
+
+.admin-form-group input,
+.admin-form-group textarea {
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 1rem;
+}
+
+.admin-form-group textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.admin-empty,
+.admin-access-denied {
+  padding: 20px;
+  color: #6b7280;
+}
+
+@media (max-width: 900px) {
+  .admin-stats,
+  .admin-grid,
+  .admin-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-page {
+    padding: 18px;
+  }
+
+  .admin-hero {
+    padding: 26px;
+  }
+
+  .admin-hero h1 {
+    font-size: 2rem;
+  }
+}
