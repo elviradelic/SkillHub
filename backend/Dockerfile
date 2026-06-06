@@ -13,6 +13,8 @@ RUN rm -f /etc/apache2/mods-enabled/mpm_* \
 
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
+RUN echo "DOCKERFILE_VERSION_FORCE_MPM_FIX_123"
+
 EXPOSE 10000
 
 CMD echo "Listen ${PORT:-10000}" > /etc/apache2/ports.conf \
