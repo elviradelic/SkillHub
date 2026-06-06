@@ -4,6 +4,10 @@ WORKDIR /var/www/html
 
 COPY . .
 
+RUN mkdir -p /var/www/html/uploads \
+    && chown -R www-data:www-data /var/www/html/uploads \
+    && chmod -R 775 /var/www/html/uploads
+
 RUN apt-get update \
     && apt-get install -y zip unzip libzip-dev \
     && docker-php-ext-install pdo_mysql mysqli zip
