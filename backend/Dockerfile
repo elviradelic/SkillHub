@@ -12,6 +12,8 @@ RUN a2enmod rewrite headers
 
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-CMD sed -i "s/Listen 80/Listen ${PORT:-80}/" /etc/apache2/ports.conf \
-    && sed -i "s/:80>/:${PORT:-80}>/" /etc/apache2/sites-available/000-default.conf \
+EXPOSE 10000
+
+CMD sed -i "s/Listen 80/Listen ${PORT:-10000}/" /etc/apache2/ports.conf \
+    && sed -i "s/:80>/:${PORT:-10000}>/" /etc/apache2/sites-available/000-default.conf \
     && apache2-foreground
