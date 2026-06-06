@@ -2,24 +2,25 @@
 
 $allowedOrigins = [
     "http://localhost:5173",
-    "https://skill-qcu12qm1j-elvira-s-projects33.vercel.app"
+    "https://exquisite-pavlova-9f0dea.netlify.app",
+    "https://6a2450ef8d2eef9b908c92f2--exquisite-pavlova-9f0dea.netlify.app"
 ];
 
 $origin = $_SERVER["HTTP_ORIGIN"] ?? "";
 
 if (in_array($origin, $allowedOrigins)) {
-    header("Access-Control-Allow-Origin: " . $origin);
+    header("Access-Control-Allow-Origin: $origin");
 } else {
     header("Access-Control-Allow-Origin: *");
 }
 
-header("Access-Control-Allow-Origin: *");
+header("Vary: Origin");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, Accept");
 header("Access-Control-Max-Age: 86400");
 header("Content-Type: application/json; charset=UTF-8");
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
     http_response_code(204);
     exit;
 }
