@@ -28,6 +28,10 @@ class MaterialController {
         $fileName = time() . '_' . basename($_FILES['file']['name']);
         $targetPath = $uploadDir . $fileName;
 
+        if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+}
+
         if (move_uploaded_file($_FILES['file']['tmp_name'], $targetPath)) {
             $id = $this->service->createMaterial([
                 "course_id" => $_POST['course_id'],
@@ -74,9 +78,12 @@ class MaterialController {
         if (!file_exists($filePath)) {
             http_response_code(404);
             echo json_encode([
-                "success" => false,
-                "message" => "File not found"
-            ]);
+              "success" => false,
+               "message" => "File upload failed",
+               "upload_dir" => $uploadDir,
+               "target_path" => $targetPath,
+               "error" => $_FILES['file']['error']
+            ]);;
             return;
         }
 
