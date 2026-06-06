@@ -182,7 +182,9 @@ function InstructorDashboard() {
   };
 
   const handleEditCourse = (course) => {
-    setEditingCourseId(course.id);
+    const courseId = course.id || course.course_id;
+
+    setEditingCourseId(courseId);
     setCourseData({
       title: course.title,
       description: course.description,
@@ -196,7 +198,9 @@ function InstructorDashboard() {
   const handleDeleteCourse = (courseId) => {
     if (!window.confirm("Are you sure you want to delete this course?")) return;
 
-    const deletedCourse = courses.find((course) => course.id === courseId);
+    const deletedCourse = courses.find(
+      (course) => Number(course.id || course.course_id) === Number(courseId)
+    );
 
     skillHubFacade
       .deleteCourse(courseId)
@@ -217,7 +221,9 @@ function InstructorDashboard() {
   const handleAddLesson = (e, courseId) => {
     e.preventDefault();
 
-    const currentCourse = courses.find((course) => course.id === courseId);
+    const currentCourse = courses.find(
+      (course) => Number(course.id || course.course_id) === Number(courseId)
+    );
 
     skillHubFacade
       .createLesson({
@@ -243,7 +249,9 @@ function InstructorDashboard() {
   const handleCreateQuiz = (e, courseId) => {
     e.preventDefault();
 
-    const currentCourse = courses.find((course) => course.id === courseId);
+    const currentCourse = courses.find(
+      (course) => Number(course.id || course.course_id) === Number(courseId)
+    );
 
     skillHubFacade
       .createQuiz({
@@ -299,12 +307,19 @@ function InstructorDashboard() {
   const handleUploadMaterial = (e, courseId) => {
     e.preventDefault();
 
+    if (!courseId) {
+      alert("Course ID is missing.");
+      return;
+    }
+
     if (!materialData.file) {
       alert("Please choose a file.");
       return;
     }
 
-    const currentCourse = courses.find((course) => course.id === courseId);
+    const currentCourse = courses.find(
+      (course) => Number(course.id || course.course_id) === Number(courseId)
+    );
 
     const formData = new FormData();
     formData.append("course_id", courseId);
@@ -313,7 +328,12 @@ function InstructorDashboard() {
 
     skillHubFacade
       .uploadMaterial(formData)
-      .then(() => {
+      .then((res) => {
+        if (res.data && res.data.success === false) {
+          alert(res.data.message || "Failed to upload material.");
+          return;
+        }
+
         alert("Material uploaded successfully.");
 
         notifyInstructor(
@@ -323,8 +343,10 @@ function InstructorDashboard() {
         );
 
         resetMaterialForm();
+        loadCourses();
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error("Upload error:", err.response?.data || err);
         alert("Failed to upload material.");
       });
   };
@@ -408,233 +430,237 @@ function InstructorDashboard() {
           <p>You have not created any courses yet.</p>
         ) : (
           <div className="instructor-grid">
-            {courses.map((course) => (
-              <div key={course.id} className="instructor-card">
-                <h3>{course.title}</h3>
+            {courses.map((course) => {
+              const courseId = course.id || course.course_id;
 
-                <p>{course.description}</p>
+              return (
+                <div key={courseId} className="instructor-card">
+                  <h3>{course.title}</h3>
 
-                <div className="instructor-meta">
-                  <span>Price: ${course.price}</span>
-                  <span>Category: {course.category_name}</span>
+                  <p>{course.description}</p>
+
+                  <div className="instructor-meta">
+                    <span>Price: ${course.price}</span>
+                    <span>Category: {course.category_name}</span>
+                  </div>
+
+                  <div className="instructor-actions">
+                    <button
+                      className="instructor-btn instructor-btn-primary"
+                      onClick={() => handleEditCourse(course)}
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      className="instructor-btn instructor-btn-danger"
+                      onClick={() => handleDeleteCourse(courseId)}
+                    >
+                      Delete
+                    </button>
+
+                    <button
+                      className="instructor-btn instructor-btn-secondary"
+                      onClick={() => setActiveLessonCourseId(courseId)}
+                    >
+                      Add Lesson
+                    </button>
+
+                    <button
+                      className="instructor-btn instructor-btn-secondary"
+                      onClick={() => setActiveQuizCourseId(courseId)}
+                    >
+                      Create Quiz
+                    </button>
+
+                    <button
+                      className="instructor-btn instructor-btn-success"
+                      onClick={() => setActiveMaterialCourseId(courseId)}
+                    >
+                      Upload Material
+                    </button>
+                  </div>
+
+                  {activeLessonCourseId === courseId && (
+                    <form
+                      className="instructor-subform instructor-form"
+                      onSubmit={(e) => handleAddLesson(e, courseId)}
+                    >
+                      <h4>Add Lesson</h4>
+
+                      <input
+                        type="text"
+                        name="title"
+                        placeholder="Lesson title"
+                        value={lessonData.title}
+                        onChange={handleLessonChange}
+                        required
+                      />
+
+                      <textarea
+                        name="content"
+                        placeholder="Lesson content"
+                        value={lessonData.content}
+                        onChange={handleLessonChange}
+                        required
+                      />
+
+                      <input
+                        type="number"
+                        name="lesson_order"
+                        placeholder="Lesson order"
+                        value={lessonData.lesson_order}
+                        onChange={handleLessonChange}
+                        required
+                      />
+
+                      <div className="instructor-actions">
+                        <button className="instructor-btn instructor-btn-primary" type="submit">
+                          Save Lesson
+                        </button>
+
+                        <button
+                          className="instructor-btn instructor-btn-secondary"
+                          type="button"
+                          onClick={resetLessonForm}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
+                  )}
+
+                  {activeQuizCourseId === courseId && (
+                    <form
+                      className="instructor-subform instructor-form"
+                      onSubmit={(e) => handleCreateQuiz(e, courseId)}
+                    >
+                      <h4>Create Quiz</h4>
+
+                      <input
+                        type="text"
+                        name="title"
+                        placeholder="Quiz title"
+                        value={quizData.title}
+                        onChange={handleQuizChange}
+                        required
+                      />
+
+                      <input
+                        type="number"
+                        name="duration"
+                        placeholder="Duration in minutes"
+                        value={quizData.duration}
+                        onChange={handleQuizChange}
+                        required
+                      />
+
+                      <div className="instructor-actions">
+                        <button className="instructor-btn instructor-btn-primary" type="submit">
+                          Save Quiz
+                        </button>
+
+                        <button
+                          className="instructor-btn instructor-btn-secondary"
+                          type="button"
+                          onClick={resetQuizForm}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
+                  )}
+
+                  {activeMaterialCourseId === courseId && (
+                    <form
+                      className="instructor-subform instructor-form"
+                      onSubmit={(e) => handleUploadMaterial(e, courseId)}
+                    >
+                      <h4>Upload Material</h4>
+
+                      <input
+                        type="text"
+                        name="title"
+                        placeholder="Material title"
+                        value={materialData.title}
+                        onChange={handleMaterialChange}
+                        required
+                      />
+
+                      <input
+                        type="file"
+                        onChange={handleMaterialFileChange}
+                        required
+                      />
+
+                      <div className="instructor-actions">
+                        <button className="instructor-btn instructor-btn-primary" type="submit">
+                          Upload Material
+                        </button>
+
+                        <button
+                          className="instructor-btn instructor-btn-secondary"
+                          type="button"
+                          onClick={resetMaterialForm}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
+                  )}
+
+                  {activeQuestionQuizId && activeQuestionCourseId === courseId && (
+                    <form
+                      className="instructor-subform instructor-form"
+                      onSubmit={handleAddQuestion}
+                    >
+                      <h4>Add Question to Created Quiz</h4>
+
+                      <input
+                        type="text"
+                        name="text"
+                        placeholder="Question text"
+                        value={questionData.text}
+                        onChange={handleQuestionChange}
+                        required
+                      />
+
+                      <input
+                        type="number"
+                        name="points"
+                        placeholder="Points"
+                        value={questionData.points}
+                        onChange={handleQuestionChange}
+                        required
+                      />
+
+                      <input
+                        type="text"
+                        name="correct_answer"
+                        placeholder="Correct answer"
+                        value={questionData.correct_answer}
+                        onChange={handleQuestionChange}
+                        required
+                      />
+
+                      <div className="instructor-actions">
+                        <button className="instructor-btn instructor-btn-primary" type="submit">
+                          Add Question
+                        </button>
+
+                        <button
+                          className="instructor-btn instructor-btn-secondary"
+                          type="button"
+                          onClick={resetQuestionForm}
+                        >
+                          Finish Questions
+                        </button>
+                      </div>
+                    </form>
+                  )}
                 </div>
-
-                <div className="instructor-actions">
-                  <button
-                    className="instructor-btn instructor-btn-primary"
-                    onClick={() => handleEditCourse(course)}
-                  >
-                    Edit
-                  </button>
-
-                  <button
-                    className="instructor-btn instructor-btn-danger"
-                    onClick={() => handleDeleteCourse(course.id)}
-                  >
-                    Delete
-                  </button>
-
-                  <button
-                    className="instructor-btn instructor-btn-secondary"
-                    onClick={() => setActiveLessonCourseId(course.id)}
-                  >
-                    Add Lesson
-                  </button>
-
-                  <button
-                    className="instructor-btn instructor-btn-secondary"
-                    onClick={() => setActiveQuizCourseId(course.id)}
-                  >
-                    Create Quiz
-                  </button>
-
-                  <button
-                    className="instructor-btn instructor-btn-success"
-                    onClick={() => setActiveMaterialCourseId(course.id)}
-                  >
-                    Upload Material
-                  </button>
-                </div>
-
-                {activeLessonCourseId === course.id && (
-                  <form
-                    className="instructor-subform instructor-form"
-                    onSubmit={(e) => handleAddLesson(e, course.id)}
-                  >
-                    <h4>Add Lesson</h4>
-
-                    <input
-                      type="text"
-                      name="title"
-                      placeholder="Lesson title"
-                      value={lessonData.title}
-                      onChange={handleLessonChange}
-                      required
-                    />
-
-                    <textarea
-                      name="content"
-                      placeholder="Lesson content"
-                      value={lessonData.content}
-                      onChange={handleLessonChange}
-                      required
-                    />
-
-                    <input
-                      type="number"
-                      name="lesson_order"
-                      placeholder="Lesson order"
-                      value={lessonData.lesson_order}
-                      onChange={handleLessonChange}
-                      required
-                    />
-
-                    <div className="instructor-actions">
-                      <button className="instructor-btn instructor-btn-primary" type="submit">
-                        Save Lesson
-                      </button>
-
-                      <button
-                        className="instructor-btn instructor-btn-secondary"
-                        type="button"
-                        onClick={resetLessonForm}
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </form>
-                )}
-
-                {activeQuizCourseId === course.id && (
-                  <form
-                    className="instructor-subform instructor-form"
-                    onSubmit={(e) => handleCreateQuiz(e, course.id)}
-                  >
-                    <h4>Create Quiz</h4>
-
-                    <input
-                      type="text"
-                      name="title"
-                      placeholder="Quiz title"
-                      value={quizData.title}
-                      onChange={handleQuizChange}
-                      required
-                    />
-
-                    <input
-                      type="number"
-                      name="duration"
-                      placeholder="Duration in minutes"
-                      value={quizData.duration}
-                      onChange={handleQuizChange}
-                      required
-                    />
-
-                    <div className="instructor-actions">
-                      <button className="instructor-btn instructor-btn-primary" type="submit">
-                        Save Quiz
-                      </button>
-
-                      <button
-                        className="instructor-btn instructor-btn-secondary"
-                        type="button"
-                        onClick={resetQuizForm}
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </form>
-                )}
-
-                {activeMaterialCourseId === course.id && (
-                  <form
-                    className="instructor-subform instructor-form"
-                    onSubmit={(e) => handleUploadMaterial(e, course.id)}
-                  >
-                    <h4>Upload Material</h4>
-
-                    <input
-                      type="text"
-                      name="title"
-                      placeholder="Material title"
-                      value={materialData.title}
-                      onChange={handleMaterialChange}
-                      required
-                    />
-
-                    <input
-                      type="file"
-                      onChange={handleMaterialFileChange}
-                      required
-                    />
-
-                    <div className="instructor-actions">
-                      <button className="instructor-btn instructor-btn-primary" type="submit">
-                        Upload Material
-                      </button>
-
-                      <button
-                        className="instructor-btn instructor-btn-secondary"
-                        type="button"
-                        onClick={resetMaterialForm}
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </form>
-                )}
-
-                {activeQuestionQuizId && activeQuestionCourseId === course.id && (
-                  <form
-                    className="instructor-subform instructor-form"
-                    onSubmit={handleAddQuestion}
-                  >
-                    <h4>Add Question to Created Quiz</h4>
-
-                    <input
-                      type="text"
-                      name="text"
-                      placeholder="Question text"
-                      value={questionData.text}
-                      onChange={handleQuestionChange}
-                      required
-                    />
-
-                    <input
-                      type="number"
-                      name="points"
-                      placeholder="Points"
-                      value={questionData.points}
-                      onChange={handleQuestionChange}
-                      required
-                    />
-
-                    <input
-                      type="text"
-                      name="correct_answer"
-                      placeholder="Correct answer"
-                      value={questionData.correct_answer}
-                      onChange={handleQuestionChange}
-                      required
-                    />
-
-                    <div className="instructor-actions">
-                      <button className="instructor-btn instructor-btn-primary" type="submit">
-                        Add Question
-                      </button>
-
-                      <button
-                        className="instructor-btn instructor-btn-secondary"
-                        type="button"
-                        onClick={resetQuestionForm}
-                      >
-                        Finish Questions
-                      </button>
-                    </div>
-                  </form>
-                )}
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </section>
