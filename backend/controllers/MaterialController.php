@@ -85,7 +85,7 @@ class MaterialController {
                "error" => $_FILES['file']['error']
             ]);;
             return;
-        }
+         }
 
         $fileName = basename($filePath);
 
