@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 import skillHubFacade from "../services/skillHubFacade";
 import "./CourseDetails.css";
 
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://skillhub-production-37e5.up.railway.app";
+
 function CourseDetails() {
   const { id } = useParams();
   const [course, setCourse] = useState(null);
@@ -225,7 +229,7 @@ function CourseDetails() {
   };
 
   const handleDownloadMaterial = (material) => {
-    window.location.href = `http://localhost:8000/materials/download/${material.id}`;
+    window.location.href = `${API_URL}/materials/download/${material.id}`;
   };
 
   const handleReviewSubmit = (e) => {
@@ -433,7 +437,6 @@ function CourseDetails() {
             </div>
           )}
 
-
           <div className="course-sidebar-card">
             <h2>Course Materials</h2>
 
@@ -456,7 +459,7 @@ function CourseDetails() {
 
                   <div style={{ display: "flex", gap: "8px" }}>
                     <a
-                      href={`http://localhost:8000/${material.file_path}`}
+                      href={`${API_URL}/${material.file_path}`}
                       target="_blank"
                       rel="noreferrer"
                       style={{
