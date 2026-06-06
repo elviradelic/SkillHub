@@ -12,6 +12,7 @@ function InstructorDashboard() {
   const [activeLessonCourseId, setActiveLessonCourseId] = useState(null);
   const [activeQuizCourseId, setActiveQuizCourseId] = useState(null);
   const [activeQuestionQuizId, setActiveQuestionQuizId] = useState(null);
+  const [activeQuestionCourseId, setActiveQuestionCourseId] = useState(null);
   const [activeMaterialCourseId, setActiveMaterialCourseId] = useState(null);
 
   const [courseData, setCourseData] = useState({
@@ -131,6 +132,7 @@ function InstructorDashboard() {
       correct_answer: "",
     });
     setActiveQuestionQuizId(null);
+    setActiveQuestionCourseId(null);
   };
 
   const resetMaterialForm = () => {
@@ -259,7 +261,14 @@ function InstructorDashboard() {
         );
 
         setActiveQuestionQuizId(res.data.id);
-        resetQuizForm();
+        setActiveQuestionCourseId(courseId);
+
+        setQuizData({
+          title: "",
+          duration: "",
+        });
+
+        setActiveQuizCourseId(null);
       })
       .catch(() => alert("Failed to create quiz."));
   };
@@ -575,7 +584,7 @@ function InstructorDashboard() {
                   </form>
                 )}
 
-                {activeQuestionQuizId && activeQuizCourseId === null && (
+                {activeQuestionQuizId && activeQuestionCourseId === course.id && (
                   <form
                     className="instructor-subform instructor-form"
                     onSubmit={handleAddQuestion}
