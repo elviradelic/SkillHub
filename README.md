@@ -30,44 +30,33 @@ The goal of this project is to simulate a real-world e-learning system while app
 
 ## Technologies
 
-### Backend
-- PHP (REST API)
-- MySQL (database)
-- XAMPP (local server)
-
 ### Frontend
-- React.js
-- HTML, CSS, JavaScript
+- React
+- Vite
+- React Router
+- Axios
 
-### Tools
-- Git & GitHub (version control)
-- Visual Studio Code
-- Visual Paradigm (UML diagrams)
+### Backend
+- PHP
+- REST API
 
----
-
-##  Database (Planned Entities)
-- User
-- Student
-- Instructor
-- Course
-- Lesson
-- Quiz
-- Question
-- Enrollment
-- Review
-- Certificate
-- Result
+### Database
+- MySQL
 
 ---
 
-##  Architecture
-The system follows a layered architecture:
-- Controller Layer (handles requests)
-- Service Layer (business logic)
-- Data Access Layer (database communication)
+## Design and Architecture
 
-Communication between frontend and backend is implemented using RESTful APIs.
+### Architectural Pattern
+- Layered Architecture
+
+### Design Patterns
+- DAO Pattern
+- Facade Pattern
+
+## Testing
+
+The project includes automated API tests covering the main functionalities of the application.
 
 ---
 
@@ -92,5 +81,6 @@ The project is divided into two main releases:
 
 ---
 
-##  Status
- Project in development – Milestone 2
+## License
+
+This project was developed for educational purposes.
