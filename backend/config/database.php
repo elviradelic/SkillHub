@@ -10,11 +10,11 @@ class Database
 
     public function __construct()
     {
-        $this->host = getenv("DB_HOST") ?: "localhost";
-        $this->db_name = getenv("DB_NAME") ?: "skillhub";
-        $this->username = getenv("DB_USER") ?: "root";
+        $this->host = getenv("DB_HOST") ?: "";
+        $this->db_name = getenv("DB_NAME") ?: "";
+        $this->username = getenv("DB_USER") ?: "";
         $this->password = getenv("DB_PASSWORD") ?: "";
-        $this->port = getenv("DB_PORT") ?: "3306";
+        $this->port = getenv("DB_PORT") ?: "";
     }
 
     public function connect()
